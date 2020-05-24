@@ -26,9 +26,17 @@ See https://github.com/jedcn/reveal-ck/wiki/Publishing-Slides
 
 Use gh-pages branch
 
+masterブランチの .gitignore に slides/ を登録
+
 ```
-git clone https://github.com/hnishi/slides-dotfiles.git --branch gh-pages --single-branch ./slides
+git checkout --orphan gh-pages  # 親commitがないgh-pagesブランチを作成。
+git commit --allow-empty  # 空コミット作ってpush
+git clone <git url> --branch gh-pages --single-branch ./slides  # slides配下にgh-pagesのみをclone
+reveal-ck generate  # slides/ ファイルを作成
+cd slides  # commit & push したらそれがgh-pagesに反映される
 ```
+
+https://sue445.hatenablog.com/entry/2015/10/03/201241
 
 ## Tips
 
