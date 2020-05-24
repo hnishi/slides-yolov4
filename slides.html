@@ -1,107 +1,8 @@
 <section>
 
-<h1>yolov4 勉強</h1>
+<h1>YOLOv4</h1>
 
-<p>YOLOv4: Optimal Speed and Accuracy of Object Detection<br>
-pdf: <a href="https://arxiv.org/pdf/2004.10934.pdf">https://arxiv.org/pdf/2004.10934.pdf</a><br>
-abs: <a href="https://arxiv.org/abs/2004.10934">https://arxiv.org/abs/2004.10934</a><br>
-github: <a href="https://github.com/AlexeyAB/darknet">https://github.com/AlexeyAB/darknet</a></p>
-
-<p><a href="https://twitter.com/ak92501/status/1253481285865156613">https://twitter.com/ak92501/status/1253481285865156613</a></p>
-
-<h2>BFLOPS = Gflops, and theoretical performance of CPU/GPU = ~40%</h2>
-
-<p>floating point operations per second (FLOPS, flops or flop/s)</p>
-
-<blockquote>
-  <p>Hello, I found your explanation of that number of BFLOPS at the end of initialisation.</p>
-
-  <p>Usually CPU and GPU has real performance ~40% of theoretical performance. For example, Yolo v3 416x416 has &gt;Total BFLOPS 65.8. GPU nVidia GeForce GTX 970 has 3494 Gflops So GTX 970 should get about ~21 FPS = (40%/&gt;100%) * 3494 / 65.8</p>
-
-  <p>Using this I tried to calculate FPS for 5-layers YOLO. I have an 1080ti -&gt;10608.6 Gflops. My model gives me &gt;total of 43.665 BFLOPS Using formula (40%/100%) * 10608.6 / 43.665 gives me 97,19 FPS In reality I get only &gt;around 35 FPS. Is the calculation method for non standard YOLO is different? Thanks in advance!</p>
-</blockquote>
-
-<p><a href="https://www.gitmemory.com/issue/AlexeyAB/darknet/4177/546902474">BFLOPS in 5-layers YOLO?</a></p>
-
-<h2>モデルの量子化</h2>
-
-<p><a href="https://www.oki.com/jp/otr/2019/n233/pdf/otr233_r11.pdf">モデル軽量化技術まとめ記事</a></p>
-
-<h2>AP50: Average Precision</h2>
-
-<p><a href="https://medium.com/@jonathan_hui/map-mean-average-precision-for-object-detection-45c121a31173">mAP (mean Average Precision) for Object Detection</a></p>
-
-<h2>方針</h2>
-
-<p>基本的な流れと実験結果、結論を説明。<br>
-あとは、調べた用語や手法を説明すればよさそう。</p>
-
-<p>BoF: Bag of Freebies<br>
-BoS: Bag of Specials</p>
-
-<p>とかよくわかってない。</p>
-
-<h2>資料</h2>
-
-<p><a href="https://www.slideshare.net/DeepLearningJP2016/dlyolov4-optimal-speed-and-accuracy-of-object-detection-234027228">[DL輪読会]YOLOv4: Optimal Speed and Accuracy of Object Detection</a></p>
-
-<p><a href="https://blog.seishin55.com/entry/2020/05/16/183132">物体認識モデルYOLOv3を軽く凌駕するYOLOv4の紹介 - ほろ酔い開発日誌</a></p>
-
-</section>
-<section>
-
-<h1>論文読み YOLOv4</h1>
-
-<h2>Links</h2>
-
-<p><a href="https://qiita.com/TakaoNarikawa/items/e4521fd8c7a522e9d4fd">【物体検知】YOLOv4をiOS上で動かす - Qiita</a></p>
-
-<p>YOLOv4: Optimal Speed and Accuracy of Object Detection<br>
-pdf: <a href="https://arxiv.org/pdf/2004.10934.pdf">https://arxiv.org/pdf/2004.10934.pdf</a><br>
-abs: <a href="https://arxiv.org/abs/2004.10934">https://arxiv.org/abs/2004.10934</a><br>
-github: <a href="https://github.com/AlexeyAB/darknet">https://github.com/AlexeyAB/darknet</a></p>
-
-<p><a href="https://twitter.com/ak92501/status/1253481285865156613">https://twitter.com/ak92501/status/1253481285865156613</a></p>
-
-<blockquote>
-  <p>darknetの開発を行っているAlexey Bochkovskiy氏が、引退宣言をしたJoe Redmon氏の後を継ぎYOLOv4を発表。<br>
-だそうです。</p>
-</blockquote>
-
-<p><a href="https://twitter.com/icoxfog417/status/1253935022308032512">https://twitter.com/icoxfog417/status/1253935022308032512</a></p>
-
-<h2>読む上でのポイント</h2>
-
-<p><a href="https://github.com/mlnagoya/surveys/edit/feature/sample/00000000_sample/Sample_antimon2.md">https://github.com/mlnagoya/surveys/edit/feature/sample/00000000_sample/Sample_antimon2.md</a></p>
-
-<h2>よみよみ</h2>
-
-<ul>
-  <li>abstract
-    <ul>
-      <li>universal<br>
-features include Weighted-Residual-Connections (WRC),<br>
-Cross-Stage-Partial-connections (CSP), Cross mini-Batch<br>
-Normalization (CmBN), Self-adversarial-training (SAT)<br>
-and Mish-activation</li>
-      <li>universal features that improve Convolutional Neural Network (CNN) accuracy</li>
-      <li>ほとんどの models, tasks, and datasets に対して有効な features (CNN accuracy を改善する手法)</li>
-      <li>We use new features: WRC, CSP, CmBN, SAT, Mish activation, Mosaic data augmentation, CmBN, DropBlock regularization, and CIoU loss, and combine some of them</li>
-      <li>achieve state-of-the-art results: 43.5% AP (65.7% AP50) for the MS COCO dataset at a realtime speed of 65 FPS on Tesla V100.</li>
-    </ul>
-  </li>
-  <li>Figure 1
-    <ul>
-      <li>YOLOv4 runs twice faster than EfficientDet with comparable performance.</li>
-      <li>Improves YOLOv3’s AP and FPS by 10% and 12%, respectively.</li>
-    </ul>
-  </li>
-</ul>
-
-</section>
-<section>
-
-<h1>YOLOv4: Optimal Speed and Accuracy of Object Detection</h1>
+<p>YOLOv4: Optimal Speed and Accuracy of Object Detection</p>
 
 <ul>
   <li>Date: 2020-04-26</li>
@@ -120,32 +21,20 @@ and Mish-activation</li>
 
 <h2>はじめに</h2>
 
-<p>yolov3 の著者 pjreddie (Joseph Redmon) とは違う。<br>
-pjreddie は CV の研究から引退。<br>
-<a href="https://twitter.com/pjreddie/status/1230524770350817280?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1253524202528731136&amp;ref_url=https%3A%2F%2Fblog.seishin55.com%2Fentry%2F2020%2F05%2F16%2F183132">軍事利用やプライバシーの問題を無視できなくなったからだとか。</a></p>
-
-<p><a href="https://github.com/AlexeyAB/darknet">この論文 yolov4 の first author は、 darknet を fork して開発を続けていた人。</a></p>
-
-<p>個人的な印象として、yolov4 と名乗っているだけで、正統な後継なの？という気はしている。（特に、pjreddie が公認しているという情報は見ていない）<br>
-たしかに、yolov3 を使っているが、たくさん組み合わせている手法の１つ。（まぁ、わかりやすい名前だからよいのか）<br>
-内容としてはまともで、たしかに良い性能が出せるモデルではあるらしい。<br>
-まぁ、darknet の継続開発をしてるから、名前はいいのかな。</p>
-
-<p>広義のアーキテクチャ・手法の探索とチューニングを行った論文と言えるが、たくさんの手法が出てくるので、この分野の事前知識、前提知識がないとつらい。<br>
-（私も、物体検出や CV の専門家ではないので、つらい）</p>
-
-</section>
-<section>
-
-<p>どうやら公認の模様</p>
-
-<blockquote>
-  <p>I am an AI developed by <a href="https://github.com/pjreddie" class="user-mention">@pjreddie</a> to complete his AI without his participation</p>
-</blockquote>
-
-<p><a href="https://twitter.com/alexeyab84/status/1264188352271613952">https://twitter.com/alexeyab84/status/1264188352271613952</a></p>
-
-<p><a href="https://github.com/alexeyab84" class="user-mention">@alexeyab84</a> さんのこのつぶやきに対し、<a href="https://github.com/pjreddie" class="user-mention">@pjreddie</a> さんは like を押している。</p>
+<ul>
+  <li>yolov3 の著者 pjreddie (Joseph Redmon) が出した論文ではない</li>
+  <li>pjreddie は CV の研究から引退。
+    <ul>
+      <li><a href="https://twitter.com/pjreddie/status/1230524770350817280?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1253524202528731136&amp;ref_url=https%3A%2F%2Fblog.seishin55.com%2Fentry%2F2020%2F05%2F16%2F183132">軍事利用やプライバシーの問題を無視できなくなったからだとか。</a></li>
+    </ul>
+  </li>
+  <li>
+<a href="https://github.com/AlexeyAB/darknet">この論文 yolov4 の first author は、 darknet を fork して開発を続けていた人。</a>
+    <ul>
+      <li><a href="https://twitter.com/alexeyab84/status/1264188352271613952">本人のコメント</a></li>
+    </ul>
+  </li>
+</ul>
 
 </section>
 <section>
@@ -162,6 +51,12 @@ pjreddie は CV の研究から引退。<br>
       <li>昨今の、object detection のスタンダードな手法</li>
     </ul>
   </li>
+</ul>
+
+</section>
+<section>
+
+<ul>
   <li>
 <a href="https://pjreddie.com/darknet/">darknet</a> とは
     <ul>
@@ -174,31 +69,33 @@ pjreddie は CV の研究から引退。<br>
 </section>
 <section>
 
-<h2>どんなもの？（手法の概要）</h2>
+<h2>概要</h2>
 
 <ul>
   <li>最先端のテクニック・手法を (ある程度の仮説を立てながら) 総当たりで実験し、良いものを採用するための実験を行った (for single GPU)</li>
   <li>性能が良かった組み合わせを採用して、YOLOv4 として提案</li>
   <li>既存の高速(高FPS)のアルゴリズムの中で、最も精度が良い手法</li>
-</ul>
-
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-24-01-30-56.png" style="background:none; border:none; box-shadow:none;"></p>
-
-<ul>
-  <li>AP: mean average precision (mAP)
-    <ul>
-      <li><a href="http://cocodataset.org/#detection-eval">averaged across all 10 IoU thresholds and all 80 categories</a></li>
-    </ul>
-  </li>
   <li>YOLOv3 よりも精度が高く、EfficientDet よりも速い</li>
 </ul>
 
 </section>
 <section>
 
-<h2>どうやって有効だと検証した？（評価指標など）</h2>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-24-01-30-56.png" style="background:none; border:none; box-shadow:none;"></p>
 
-<p>以下の内容を検証（精度）</p>
+</section>
+<section>
+
+<h3>AP: mean average precision (mAP)</h3>
+
+<ul>
+  <li><a href="http://cocodataset.org/#detection-eval">averaged across all 10 IoU thresholds and all 80 categories</a></li>
+</ul>
+
+</section>
+<section>
+
+<h2>検証内容</h2>
 
 <ol>
   <li>Influence of different features on Classifier training</li>
@@ -210,10 +107,9 @@ pjreddie は CV の研究から引退。<br>
 </section>
 <section>
 
-<h2>技術や手法の肝は？（手法のポイント）</h2>
+<h2>手法探索とチューニング</h2>
 
 <ul>
-  <li>以下のアーキテクチャ・手法の探索とチューニングを行った</li>
   <li>モデルアーキテクチャ
     <ul>
       <li>backbone: 画像の特徴抽出の役割</li>
@@ -228,7 +124,7 @@ pjreddie は CV の研究から引退。<br>
   </li>
   <li>Bag of specials
     <ul>
-      <li>少ないコスト（推論時時間や計算リソースだと思われる）で大きな精度向上ができるもの</li>
+      <li>少ないコスト(推論時間や計算リソース)で大きな精度向上ができるもの</li>
     </ul>
   </li>
 </ul>
@@ -238,13 +134,15 @@ pjreddie は CV の研究から引退。<br>
 
 <h3>物体検出器のアーキテクチャ</h3>
 
-<p><img src="attachments/2020-05-23-20-45-48.png" alt=""></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-23-20-45-48.png" style="background:white; border:none; box-shadow:none;"></p>
+
+</section>
+<section>
 
 <ul>
   <li>backbone: 画像の特徴抽出の役割</li>
   <li>neck: backboneから受けた特徴マップをよしなに操作して、よりよい特徴量を生み出す</li>
-  <li>head: クラス分類やbbox(物体を囲む四角形)の位置を予測する</li>
-  <li>headの部分は大きく1-stageか2-stageかに分かれる
+  <li>head: クラス分類やbbox(物体を囲む四角形)の位置を予測する
     <ul>
       <li>1-stage: 直接的に予測を行う
         <ul>
@@ -353,15 +251,16 @@ head: クラス分類やbbox(物体を囲む四角形)の位置を予測する</
 </section>
 <section>
 
-<h3>エッジ領域である、Jetson AGX XavierはFPSが割と小さく、TensorRTに変換及び量子化等の対応が必要</h3>
+<p>エッジ領域である、Jetson AGX XavierはFPSが割と小さく、TensorRTに変換及び量子化等の対応が必要</p>
 
 <p>Jetson AGX Xavier上で32FPS程度</p>
 
-<blockquote>
-  <p>@Kmarconi <a href="https://github.com/marcoslucianops" class="user-mention">@marcoslucianops</a> You can use Yolov4 on tensorRT using tkDNN with 32 FPS(FP16) / 17 FPS(FP32) with batch=1 on AGX Xavier: #5354 (comment) With batch=4 FPS will be higher.</p>
-</blockquote>
+<p>Ref: <a href="https://github.com/AlexeyAB/darknet/issues/5386#issuecomment-621169646">https://github.com/AlexeyAB/darknet/issues/5386#issuecomment-621169646</a>)</p>
 
-<p><a href="https://github.com/AlexeyAB/darknet/issues/5386#issuecomment-621169646">https://github.com/AlexeyAB/darknet/issues/5386#issuecomment-621169646</a>)</p>
+</section>
+<section>
+
+<p>ちなみに</p>
 
 <ul>
   <li>NVIDIA Tesla V100
@@ -393,13 +292,6 @@ head: クラス分類やbbox(物体を囲む四角形)の位置を予測する</
 <h2>関連する論文</h2>
 
 <ul>
-  <li>Reference の他の論文で読んだ方が良さげなものをピックアップ</li>
-  <li>
-<a href="https://arxiv.org/pdf/1710.05941.pdf">Web で公開されている論文ならリンクにする</a>
-    <ul>
-      <li>サブリストでそれがどんな論文か一言あるとBetter</li>
-    </ul>
-  </li>
   <li>network
     <ul>
       <li>
