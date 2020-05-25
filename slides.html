@@ -124,6 +124,12 @@
       <li>head: クラス分類やbbox(物体を囲む四角形)の位置を予測する</li>
     </ul>
   </li>
+</ul>
+
+</section>
+<section>
+
+<ul>
   <li>Bag of freebies
     <ul>
       <li>学習上の工夫</li>
@@ -221,6 +227,12 @@ Head: YOLOv3</p>
       <li>DIoU-NMS</li>
     </ul>
   </li>
+</ul>
+
+</section>
+<section>
+
+<ul>
   <li>データオーグメンテーション
     <ul>
       <li>CutMix</li>
@@ -228,6 +240,12 @@ Head: YOLOv3</p>
       <li>Self-Adversarial Training</li>
     </ul>
   </li>
+</ul>
+
+</section>
+<section>
+
+<ul>
   <li>正則化
     <ul>
       <li>DropBlock regularization</li>
@@ -272,7 +290,7 @@ Head: YOLOv3</p>
 
 <p>4 つの画像を混ぜる</p>
 
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-22-52-21.png" style="background:white; border:none; box-shadow:none;"></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-22-52-21.png" width="70%" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
 <section>
@@ -289,9 +307,9 @@ Head: YOLOv3</p>
 
 <h4>Modified SAM</h4>
 
-<p>spatial-wise attention から pointwise attention へ修正</p>
+<p>spatial-wise から pointwise attention へ修正</p>
 
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-17-57.png" style="background:white; border:none; box-shadow:none;"></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-17-57.png" width="70%" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
 <section>
@@ -300,9 +318,9 @@ Head: YOLOv3</p>
 
 <p><a href="https://arxiv.org/pdf/1803.01534.pdf">PAN (Path Aggregation Network for Instance Segmentation)</a></p>
 
-<p>shortcut connection を addition から concatenation に変更</p>
+<p>addition から concatenation に変更</p>
 
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-24-12.png" style="background:white; border:none; box-shadow:none;"></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-24-12.png" width="70%" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
 <section>
@@ -311,7 +329,7 @@ Head: YOLOv3</p>
 
 <p><a href="https://arxiv.org/abs/2002.05712">Cross-Iteration Batch Normalization (CBN) (2020/02/13 on arXiv)</a> をベースにして、改良を加えた</p>
 
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-03-47.png" style="background:white; border:none; box-shadow:none;"></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-03-47.png" width="70%" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
 </section>
@@ -332,6 +350,11 @@ Head: YOLOv3</p>
       <li>bilateral blurring, MixUp, CutMix and Mosaic</li>
     </ul>
   </li>
+  <li>activations
+    <ul>
+      <li>Leaky-ReLU (as default), Swish, and Mish</li>
+    </ul>
+  </li>
 </ul>
 
 </section>
@@ -343,25 +366,11 @@ Head: YOLOv3</p>
 <section>
 
 <ul>
-  <li>activations
-    <ul>
-      <li>Leaky-ReLU (as default), Swish, and Mish.</li>
-    </ul>
-  </li>
-</ul>
-
-</section>
-<section>
-
-<ul>
   <li>
 <a href="https://arxiv.org/abs/1908.08681">Mish (A Self Regularized Non-Monotonic Neural Activation Function)</a> は、昨年発表された連続な活性化関数 (2019年10月)</li>
 </ul>
 
-</section>
-<section>
-
-<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-04-10.png" style="background:white; border:none; box-shadow:none;"></p>
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-04-10.png" width="40%" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
 <section>
@@ -373,9 +382,6 @@ Head: YOLOv3</p>
 
 <p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-50-34.png" style="background:white; border:none; box-shadow:none;"></p>
 
-</section>
-<section>
-
 <p>CutMix, Mosaic, Label Smoothing, Mish の効果が大きい</p>
 
 </section>
@@ -383,16 +389,13 @@ Head: YOLOv3</p>
 
 <h4>Influence of different features on Detector training</h4>
 
-</section>
-<section>
-
 <ul>
   <li>Loss algorithms for bounded box regression
     <ul>
       <li>GIoU, CIoU, DIoU, MSE</li>
     </ul>
   </li>
-  <li>単純な bbox の MSE 誤差よりも、IoU ベースの損失関数 (<a href="https://arxiv.org/abs/1911.08287">CIoU-loss: Nov 2019</a>) の方が良かった</li>
+  <li>単純な bbox の MSE 誤差よりも、IoU ベースの損失関数 (<a href="https://arxiv.org/abs/1911.08287">CIoU-loss: Nov 2019</a>) の方が良い</li>
 </ul>
 
 </section>
