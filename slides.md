@@ -73,6 +73,9 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
   - backbone: 画像の特徴抽出の役割
   - neck: backboneから受けた特徴マップをよしなに操作して、よりよい特徴量を生み出す
   - head: クラス分類やbbox(物体を囲む四角形)の位置を予測する
+
+---
+
 - Bag of freebies
   - 学習上の工夫
 - Bag of specials
@@ -130,10 +133,16 @@ Head: YOLOv3
   - bboxのregression loss
   - CIoU-loss
   - DIoU-NMS
+
+---
+
 - データオーグメンテーション
   - CutMix
   - Mosaic data augmentation
   - Self-Adversarial Training
+
+---
+
 - 正則化
   - DropBlock regularization
 - 正規化
@@ -162,7 +171,7 @@ Mosaic と SAT は著者らによって新しく提案された Data Augmentatio
 
 4 つの画像を混ぜる
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-22-52-21.png" style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-22-52-21.png" width="70%" style="background:white; border:none; box-shadow:none;">
 
 ---
 
@@ -175,9 +184,9 @@ Mosaic と SAT は著者らによって新しく提案された Data Augmentatio
 
 #### Modified SAM
 
-spatial-wise attention から pointwise attention へ修正
+spatial-wise から pointwise attention へ修正
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-17-57.png" style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-17-57.png" width="70%" style="background:white; border:none; box-shadow:none;">
 
 ---
 
@@ -185,9 +194,9 @@ spatial-wise attention から pointwise attention へ修正
 
 [PAN (Path Aggregation Network for Instance Segmentation)](https://arxiv.org/pdf/1803.01534.pdf)
 
-shortcut connection を addition から concatenation に変更
+addition から concatenation に変更
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-24-12.png" style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-24-12.png" width="70%" style="background:white; border:none; box-shadow:none;">
 
 ---
 
@@ -195,7 +204,7 @@ shortcut connection を addition から concatenation に変更
 
 [Cross-Iteration Batch Normalization (CBN) (2020/02/13 on arXiv)](https://arxiv.org/abs/2002.05712) をベースにして、改良を加えた
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-03-47.png" style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-03-47.png" width="70%" style="background:white; border:none; box-shadow:none;">
 
 ***
 ***
@@ -208,6 +217,8 @@ shortcut connection を addition から concatenation に変更
 
 - data augmentation
   - bilateral blurring, MixUp, CutMix and Mosaic
+- activations
+  - Leaky-ReLU (as default), Swish, and Mish
 
 ---
 
@@ -215,16 +226,9 @@ shortcut connection を addition から concatenation に変更
 
 ---
 
-- activations
-  - Leaky-ReLU (as default), Swish, and Mish.
-
----
-
 - [Mish (A Self Regularized Non-Monotonic Neural Activation Function)](https://arxiv.org/abs/1908.08681) は、昨年発表された連続な活性化関数 (2019年10月)
 
----
-
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-04-10.png" style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-04-10.png" width="40%" style="background:white; border:none; box-shadow:none;">
 
 ---
 
@@ -234,20 +238,16 @@ shortcut connection を addition から concatenation に変更
 
 <img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-50-34.png" style="background:white; border:none; box-shadow:none;">
 
----
-
 CutMix, Mosaic, Label Smoothing, Mish の効果が大きい
 
 ---
 
 #### Influence of different features on Detector training
 
----
-
 - Loss algorithms for bounded box regression
   - GIoU, CIoU, DIoU, MSE
 
-- 単純な bbox の MSE 誤差よりも、IoU ベースの損失関数 ([CIoU-loss: Nov 2019](https://arxiv.org/abs/1911.08287)) の方が良かった
+- 単純な bbox の MSE 誤差よりも、IoU ベースの損失関数 ([CIoU-loss: Nov 2019](https://arxiv.org/abs/1911.08287)) の方が良い
 
 ---
 
