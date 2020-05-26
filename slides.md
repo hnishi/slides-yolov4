@@ -81,6 +81,10 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
 - Bag of specials
   - 少ないコスト(推論時間や計算リソース)で大きな精度向上ができるもの
 
+```note
+著者は、これらを BoF, BoS と命名し、区別して議論しているが、一般的に使われる用語ではないと思われる。
+```
+
 ---
 
 ### 物体検出器のアーキテクチャ
@@ -98,6 +102,7 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
   - 2-stage: 候補領域を出してから予測を行う
     - R-CNN系列
     - 精度重視
+  - 今回は、1-stage のみに focus する
 
 ---
 
@@ -117,40 +122,118 @@ Head: YOLOv3
 
 ---
 
-#### Neck: SPP、PAN
+#### Neck: FPN、PANet
 
-  - [SPP (Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition)](https://arxiv.org/abs/1406.4729)
-    - 複数サイズの window でプーリングして特徴量を作り
-    、受容野を広げることができる
-  - [PAN (Path Aggregation Network for Instance Segmentation)](https://arxiv.org/pdf/1803.01534.pdf)
+- [FPN (Feature Pyramid Network)](https://arxiv.org/abs/1612.03144), Bi-FPN
+  - YOLOv3 は FPN を Neck として採用し、異なるスケールの特徴を backbone から抽出している
+  - 複数サイズの window でプーリングして特徴量を作り
+  、受容野を広げることができる
+- [PAN (Path Aggregation Network for Instance Segmentation)](https://arxiv.org/pdf/1803.01534.pdf)
 
 ---
 
-### 学習上の工夫 (Bag of freebies)と精度改善上の工夫 (Bag of specials)
+#### Head
 
-- 活性化関数
-  - Mish acrivation
-  - bboxのregression loss
+- bounding box (bbox) の分類タスクを担うネットワーク
+- output の例として、 bounding box の (x, y, h, w) と k 個のクラスの確率 + 1 (バッググランドの確率)
+- YOLO は anchor-based な検出器で、anchor ごとに head network が適用される
+-  Single Shot Detector (SSD) や RetinaNet も anchor-based な検出器である
+
+---
+
+### Bag of freebies
+
+推論コストを上げず、学習手法と学習コストのみ変更させ、精度を改善する手法
+
+- bbox の regression loss
+  - IoU-loss
+  - GIoU-loss
   - CIoU-loss
-  - DIoU-NMS
 
 ---
 
 - データオーグメンテーション
+  - CutOut
   - CutMix
   - Mosaic data augmentation
   - Self-Adversarial Training
+- 正則化
+  - DropOut, DropConnect and DropBlock
 
 ---
 
-- 正則化
-  - DropBlock regularization
 - 正規化
-  - CmBN
+  - CmBN (cross mini-batch normalization) (後述)
 - その他
   - Optimal hyper parameters
   - Cosine annealing scheduler
   - Class label smoothing
+
+---
+
+#### Data augmentation
+
+- 明るさ、彩度、コントラスト、ノイズを変更したり、画像の回転、トリミングなどの幾何学的歪みを導入する
+- モデルの汎化性能を上げることができる
+- 例えば、[CutOut](https://arxiv.org/abs/1708.04552) や [Random Erase](https://arxiv.org/abs/1708.04896) はランダムに画像の領域をマスクして適当な値で埋める
+
+---
+
+Random Erase
+
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-23-34-08.png" style="background:white; border:none; box-shadow:none;">
+
+---
+
+#### 正則化
+
+- overf-itting を防ぐ
+
+---
+
+#### loss
+
+- 伝統的なものは平均二乗誤差 (MSE: Mean Squared error)
+- [IoU loss](https://arxiv.org/abs/1608.01471): 予測された bbox と ground truth の bbox の面積を考慮
+- [GIoU loss](https://arxiv.org/pdf/1902.09630v2.pdf): 面積だけでなく、bbox の形と回転を考慮
+- CIoU loss: 中心間の距離とアスペクト比を考慮
+- YOLOv4 では CIoU loss が使われている (他の手法より、収束が速く、精度が良かったため)
+
+---
+
+### Bag of specials
+
+推論コストを少しだけ上げて、物体検知の精度を大幅に上げる手法
+
+- Improving receptive field
+  - [SPP (Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition)](https://arxiv.org/abs/1406.4729), ASPP and RFB
+  - YOLOv4 は SPP を採用
+
+---
+
+- Attention modules for CNNs
+  - channel wise attention: Squeeze-and-Excitation (SE)
+  - spatial-wise attention, like Spatial Attention Module (SAM)
+- 活性化関数
+  - Mish acrivation, LReLU, PReLU and ReLU6
+
+---
+
+#### attention modules for CNNs
+
+- channel wise attention: Squeeze-and-Excitation (SE)
+  - 10% 推論時間が伸びる (on GPU)
+- spatial-wise attention, like Spatial Attention Module (SAM)
+  - SAM は SE ほど推論コストの悪化は多くはないらしい
+  - YOLOv4 は SAM を採用（修正あり）
+
+---
+
+#### Activation
+
+- [Mish](https://arxiv.org/abs/1908.08681)
+  - Squeeze Excite Network with Mish (on CIFAR-100 dataset) resulted in an increase in Top-1 test accuracy by 0.494% and 1.671% as compared to the same network with Swish and ReLU respectively.
+- [参考: Activation Functions の比較](https://www.desmos.com/calculator/rhx5tl8ygi)
 
 ---
 
@@ -317,7 +400,12 @@ truth
 
 ## 議論、課題など
 
-- detector の BoF を改善できる余地がある（future work）　
+- Detector の BoF を改善できる余地がある?
+
+> In the future we plan to expand significantly the content of Bag of Freebies (BoF) for the detector, which theoretically can address some problems and increase the detector accuracy, and sequentially check
+
+---
+
 - FPSが70~130程度あるが、V100の強めのマシンであることには注意が必要（既存のモデルに対するパフォーマンスがよいことには変わりない）
 
 ---
