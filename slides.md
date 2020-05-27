@@ -113,29 +113,29 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
 
 ---
 
-### ネットワークアーキテクチャ
+#### Backbone
 
-Backbone: CSPDarknet53
-Neck: SPP、PAN
-Head: YOLOv3
-
----
-
-#### Backbone: CSPDarknet53
-
+- VGG16, ResNet-50, SpineNet, EfficientNet-B0/B7
+CSPDarknet53
 - [CSPNet](https://arxiv.org/pdf/1911.11929.pdf)
   - 精度をあまり落とさずに、計算コストを省略するための手法
-- CSPNet で提案される機構を Darknet53 (YOLOv3で使われているbackbone) に導入
+- CSPDarknet53: CSPNet で提案される機構を Darknet53 (YOLOv3で使われているbackbone) に導入したもの
+- CSPResNeXt50: CSPNet を [ResNeXt50](https://arxiv.org/abs/1611.05431) に導入したもの
 
 ---
 
-#### Neck: FPN、PANet
+#### Neck
+
+- Additional blocks
+  - SPP, ASPP, RFB, SAM
+- Path-aggregation blocks
+  - FPN, [PAN](https://arxiv.org/pdf/1803.01534.pdf), NAS-FPN, Fully-connected FPN, BiFPN, ASFF, SFAM
+
+---
 
 - [FPN (Feature Pyramid Network)](https://arxiv.org/abs/1612.03144), Bi-FPN
   - YOLOv3 は FPN を Neck として採用し、異なるスケールの特徴を backbone から抽出している
-  - 複数サイズの window でプーリングして特徴量を作り
-  、受容野を広げることができる
-- [PAN (Path Aggregation Network for Instance Segmentation)](https://arxiv.org/pdf/1803.01534.pdf)
+  - 複数サイズの window でプーリングして特徴量を作り、受容野を広げることができる
 
 ---
 
@@ -145,6 +145,15 @@ Head: YOLOv3
 - output の例として、 bounding box の (x, y, h, w) と k 個のクラスの確率 + 1 (バッググランドの確率)
 - YOLO は anchor-based な検出器で、anchor ごとに head network が適用される
 -  Single Shot Detector (SSD) や RetinaNet も anchor-based な検出器である
+
+---
+
+- Dense Prediction (one-stage):
+  - RPN, SSD, YOLO, RetinaNet (anchor based)
+  - CornerNet, CenterNet, MatrixNet, FCOS (anchor free)
+- Sparse Prediction (two-stage):
+  - Faster R-CNN, R-FCN, Mask RCNN (anchor based)
+  - RepPoints (anchor free)
 
 ---
 
@@ -350,6 +359,29 @@ CutMix, Mosaic, Label Smoothing, Mish の効果が大きい
 
 <img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-14-20.png" style="background:white; border:none; box-shadow:none;">
 
+---
+
+#### Influence of different backbones and pretrained weightings on Detector training
+
+- classification の精度は CSPResNeXt-50 のほうが  CSPDarknet53 よりも高い
+- 物体検知 の精度は CSPDarknet53 のほうが高かった
+- BoF と Mish を組み合わせとき、CSPResNeXt-50 は classification の精度しか上がらなかったが、 CSPDarknet53 は classification も detector の精度も上がった
+
+---
+
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-22-59-07.png" style="background:white; border:none; box-shadow:none;">
+
+---
+
+#### Influence of different minibatch size on Detector training
+
+- BoF と BoS を導入した状態で、mini-batch size は detector の性能にほとんど影響を与えなかった
+- BoF と BoS の導入により、複数 GPU を使った高コストな学習を行わなくても優れた detector を得ることができる
+
+---
+
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-04-15.png" width=50% style="background:white; border:none; box-shadow:none;">
+
 ***
 ***
 
@@ -408,6 +440,12 @@ truth
 - SAM-block
 - PAN path-aggregation block
 - DIoU-NMS
+
+---
+
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-05-28.png" style="background:none; border:none; box-shadow:none;">
+
+- 既存の手法より、高い FPS と精度
 
 ***
 ***
