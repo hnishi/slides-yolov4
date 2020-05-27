@@ -45,6 +45,13 @@ YOLOv4: Optimal Speed and Accuracy of Object Detection
 - 既存の高速(高FPS)のアルゴリズムの中で、最も精度が良い手法
 - YOLOv3 よりも精度が高く、EfficientDet よりも速い
 
+```note
+様々な最先端の手法が紹介されており、その手法の性能への評価を行っている。
+手法の名前が色々出てくるが、CNN をガリガリやっているわけではないので、CNN に馴染みのない人には辛い。
+しかし、この論文に出てくる手法（名前）を参考に、各個人でそれぞれの参考文献をたどって抑えていけば、
+最近の CNN 精度改善の Review ぽいので、おおよその最新手法を把握できそう。
+```
+
 ---
 
 <img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-24-01-30-56.png" style="background:none; border:none; box-shadow:none;">
