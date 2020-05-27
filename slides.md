@@ -289,6 +289,13 @@ addition から concatenation に変更
 
 <img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-25-23-03-47.png" width="70%" style="background:white; border:none; box-shadow:none;">
 
+---
+
+- [CBN (Cross-Iteration Batch Normalization)](https://arxiv.org/abs/2002.05712)
+  - batch size が小さいときは、Batch Normalization の有効性が低いことが知られている
+  - CBN では複数の iteration の examples を結合することで有効性を上げる
+- CmBN は、1つの batch に含まれる全ての mini-batches のみを結合して normalize する
+
 ***
 ***
 
