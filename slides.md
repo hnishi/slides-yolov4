@@ -380,7 +380,7 @@ CutMix, Mosaic, Label Smoothing, Mish の効果が大きい
 
 ---
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-04-15.png" width=50% style="background:white; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-04-15.png" width="100%" style="background:white; border:none; box-shadow:none;">
 
 ***
 ***
@@ -443,7 +443,7 @@ truth
 
 ---
 
-<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-05-28.png" style="background:none; border:none; box-shadow:none;">
+<img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-05-28.png" width="70%" style="background:none; border:none; box-shadow:none;">
 
 - 既存の手法より、高い FPS と精度
 
