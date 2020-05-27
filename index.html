@@ -237,42 +237,50 @@
 </section>
 <section>
 
-<h3>ネットワークアーキテクチャ</h3>
-
-<p>Backbone: CSPDarknet53<br>
-Neck: SPP、PAN<br>
-Head: YOLOv3</p>
-
-</section>
-<section>
-
-<h4>Backbone: CSPDarknet53</h4>
+<h4>Backbone</h4>
 
 <ul>
+  <li>VGG16, ResNet-50, SpineNet, EfficientNet-B0/B7<br>
+CSPDarknet53</li>
   <li>
 <a href="https://arxiv.org/pdf/1911.11929.pdf">CSPNet</a>
     <ul>
       <li>精度をあまり落とさずに、計算コストを省略するための手法</li>
     </ul>
   </li>
-  <li>CSPNet で提案される機構を Darknet53 (YOLOv3で使われているbackbone) に導入</li>
+  <li>CSPDarknet53: CSPNet で提案される機構を Darknet53 (YOLOv3で使われているbackbone) に導入したもの</li>
+  <li>CSPResNeXt50: CSPNet を <a href="https://arxiv.org/abs/1611.05431">ResNeXt50</a> に導入したもの</li>
 </ul>
 
 </section>
 <section>
 
-<h4>Neck: FPN、PANet</h4>
+<h4>Neck</h4>
+
+<ul>
+  <li>Additional blocks
+    <ul>
+      <li>SPP, ASPP, RFB, SAM</li>
+    </ul>
+  </li>
+  <li>Path-aggregation blocks
+    <ul>
+      <li>FPN, <a href="https://arxiv.org/pdf/1803.01534.pdf">PAN</a>, NAS-FPN, Fully-connected FPN, BiFPN, ASFF, SFAM</li>
+    </ul>
+  </li>
+</ul>
+
+</section>
+<section>
 
 <ul>
   <li>
 <a href="https://arxiv.org/abs/1612.03144">FPN (Feature Pyramid Network)</a>, Bi-FPN
     <ul>
       <li>YOLOv3 は FPN を Neck として採用し、異なるスケールの特徴を backbone から抽出している</li>
-      <li>複数サイズの window でプーリングして特徴量を作り<br>
-、受容野を広げることができる</li>
+      <li>複数サイズの window でプーリングして特徴量を作り、受容野を広げることができる</li>
     </ul>
   </li>
-  <li><a href="https://arxiv.org/pdf/1803.01534.pdf">PAN (Path Aggregation Network for Instance Segmentation)</a></li>
 </ul>
 
 </section>
@@ -285,6 +293,24 @@ Head: YOLOv3</p>
   <li>output の例として、 bounding box の (x, y, h, w) と k 個のクラスの確率 + 1 (バッググランドの確率)</li>
   <li>YOLO は anchor-based な検出器で、anchor ごとに head network が適用される</li>
   <li>Single Shot Detector (SSD) や RetinaNet も anchor-based な検出器である</li>
+</ul>
+
+</section>
+<section>
+
+<ul>
+  <li>Dense Prediction (one-stage):
+    <ul>
+      <li>RPN, SSD, YOLO, RetinaNet (anchor based)</li>
+      <li>CornerNet, CenterNet, MatrixNet, FCOS (anchor free)</li>
+    </ul>
+  </li>
+  <li>Sparse Prediction (two-stage):
+    <ul>
+      <li>Faster R-CNN, R-FCN, Mask RCNN (anchor based)</li>
+      <li>RepPoints (anchor free)</li>
+    </ul>
+  </li>
 </ul>
 
 </section>
@@ -604,6 +630,37 @@ Head: YOLOv3</p>
 <p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-26-00-14-20.png" style="background:white; border:none; box-shadow:none;"></p>
 
 </section>
+<section>
+
+<h4>Influence of different backbones and pretrained weightings on Detector training</h4>
+
+<ul>
+  <li>classification の精度は CSPResNeXt-50 のほうが  CSPDarknet53 よりも高い</li>
+  <li>物体検知 の精度は CSPDarknet53 のほうが高かった</li>
+  <li>BoF と Mish を組み合わせとき、CSPResNeXt-50 は classification の精度しか上がらなかったが、 CSPDarknet53 は classification も detector の精度も上がった</li>
+</ul>
+
+</section>
+<section>
+
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-22-59-07.png" style="background:white; border:none; box-shadow:none;"></p>
+
+</section>
+<section>
+
+<h4>Influence of different minibatch size on Detector training</h4>
+
+<ul>
+  <li>BoF と BoS を導入した状態で、mini-batch size は detector の性能にほとんど影響を与えなかった</li>
+  <li>BoF と BoS の導入により、複数 GPU を使った高コストな学習を行わなくても優れた detector を得ることができる</li>
+</ul>
+
+</section>
+<section>
+
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-04-15.png" width="100%" style="background:white; border:none; box-shadow:none;"></p>
+
+</section>
 </section>
 
 <section>
@@ -678,6 +735,15 @@ truth</li>
   <li>SAM-block</li>
   <li>PAN path-aggregation block</li>
   <li>DIoU-NMS</li>
+</ul>
+
+</section>
+<section>
+
+<p><img src="https://raw.githubusercontent.com/hnishi/slides-yolov4/master/attachments/2020-05-27-23-05-28.png" width="70%" style="background:none; border:none; box-shadow:none;"></p>
+
+<ul>
+  <li>既存の手法より、高い FPS と精度</li>
 </ul>
 
 </section>
